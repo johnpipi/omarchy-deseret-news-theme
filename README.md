@@ -37,21 +37,30 @@ omarchy theme install https://github.com/johnpipi/omarchy-deseret-news-theme
 
 Editable SVG sources for all four are in `sources/`.
 
-## Optional: themed screensaver
+## Optional: themed branding
 
-Omarchy's screensaver reads a fixed path and never looks at the theme, so it
-can't be themed by a theme alone. Two opt-in pieces close that gap.
+Omarchy reads its fastfetch logo from `branding/about.txt` and its screensaver
+art from `branding/screensaver.txt`. Neither looks at the active theme, so a
+theme cannot change them on its own. Two opt-in pieces close that gap.
 
-**1. Swap the art with the theme.** This hook copies `screensaver.txt` from the
-active theme into branding on every theme switch, and restores Omarchy's stock
-logo for any theme that doesn't ship one. It is generic — any theme with a
-`screensaver.txt` at its root works.
+**1. Sync the art with the theme.** This hook copies `about.txt` and
+`screensaver.txt` from the active theme into branding on every theme switch,
+and restores Omarchy's stock art for any theme that doesn't ship its own. It is
+generic — any theme with those files at its root works, not just this one.
 
 ```bash
-omarchy hook install theme-set ~/.config/omarchy/themes/deseret-news/theme-screensaver.hook
+omarchy hook install theme-set ~/.config/omarchy/themes/deseret-news/theme-branding.hook
 ```
 
-**2. Paint it in brand gold.** `omarchy-screensaver` calls
+That gives you the box-drawing beehive as the fastfetch logo (21x8, so it stays
+intact in narrow terminals) and the honeycomb screensaver.
+
+To render the logo in the theme's yellow rather than Omarchy's green, copy
+`/etc/fastfetch/config.jsonc` to `~/.config/fastfetch/config.jsonc` and change
+`green` to `yellow`. Those are ANSI names, so they follow whatever theme is
+active rather than pinning a hex.
+
+**2. Paint the screensaver in brand gold.** `omarchy-screensaver` calls
 `ttfx --random-effect`, which picks both the effect *and* its palette at
 random. This shim rewrites only that one invocation, rotating through four
 effects configured with brand golds; every other `ttfx` call passes through
@@ -65,7 +74,18 @@ It has to live in `/usr/local/bin` because `/usr/share/omarchy/bin` comes first
 on the Hyprland session PATH, so `omarchy-screensaver` itself can't be shadowed
 — but `ttfx` (in `/usr/bin`) can. Remove with `sudo rm /usr/local/bin/ttfx`.
 
-`sources/screensaver-wordmark.txt` is an alternative, wordmark-only screensaver.
+## Alternatives
+
+`sources/` holds editable SVGs for the backgrounds plus swap-in variants:
+
+| File | |
+| --- | --- |
+| `about-honeycomb.txt` | 7-hex honeycomb cluster logo (17x7) |
+| `about-skep-solid.txt` | filled beehive logo (54x22) |
+| `about-skep-outline.txt` | outline beehive logo (54x24) |
+| `screensaver-wordmark.txt` | wordmark-only screensaver |
+
+Copy one over `about.txt` or `screensaver.txt` and re-apply the theme.
 
 ## Trademarks
 
