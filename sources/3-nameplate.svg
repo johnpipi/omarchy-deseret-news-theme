@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2400" viewBox="0 0 1920 1200">
+  <rect width="1920" height="1200" fill="#1e1e1e"/>
+  <rect x="0" y="0" width="1920" height="6" fill="#ffd217"/>
+  <rect x="0" y="1194" width="1920" height="6" fill="#ffd217"/>
+  <text x="960" y="612" text-anchor="middle"
+        font-family="Noto Serif" font-weight="900" font-size="168"
+        fill="#f2f2f2">Deseret News<tspan fill="#ffd217">.</tspan></text>
+  <rect x="820" y="662" width="280" height="2" fill="#424242"/>
+  <text x="960" y="712" text-anchor="middle"
+        font-family="Noto Sans" font-weight="500" font-size="28"
+        letter-spacing="16" fill="#7c7c7c">EST. 1850</text>
+</svg>

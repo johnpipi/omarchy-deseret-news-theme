@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3840" height="2400" viewBox="0 0 1920 1200">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="48%" r="75%">
+      <stop offset="0%"   stop-color="#242424"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </radialGradient>
+    <clipPath id="dome">
+      <path d="M 720,780 C 720,240 1200,240 1200,780 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="1920" height="1200" fill="url(#g)"/>
+  <path d="M 720,780 C 720,240 1200,240 1200,780 Z" fill="#ffd217"/>
+  <g clip-path="url(#dome)" fill="#191919">
+    <rect x="700" y="455" width="520" height="13"/>
+    <rect x="700" y="520" width="520" height="13"/>
+    <rect x="700" y="585" width="520" height="13"/>
+    <rect x="700" y="650" width="520" height="13"/>
+    <rect x="700" y="715" width="520" height="13"/>
+  </g>
+  <path d="M 925,782 L 925,704 A 35,35 0 0 1 995,704 L 995,782 Z" fill="#191919"/>
+  <rect x="694" y="780" width="532" height="26" rx="13" fill="#ffd217"/>
+</svg>

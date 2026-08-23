@@ -1,0 +1,29 @@
+#!/bin/bash
+# Sync Omarchy branding with the active theme.
+#
+# Omarchy reads its fastfetch logo from branding/about.txt and its screensaver
+# art from branding/screensaver.txt. Neither looks at the theme, so a theme
+# cannot change them on its own. This hook closes that gap: a theme opts in by
+# shipping about.txt and/or screensaver.txt at its root, and any theme that
+# doesn't ship one gets Omarchy's stock art back.
+#
+# Generic -- works for any theme, not just this one.
+
+set -euo pipefail
+
+THEME_DIR="$HOME/.local/state/omarchy/current/theme"
+BRANDING="$HOME/.config/omarchy/branding"
+OMA="${OMARCHY_PATH:-/usr/share/omarchy}"
+
+mkdir -p "$BRANDING"
+
+sync() {                     # $1 = branding filename, $2 = omarchy fallback
+  if [[ -f $THEME_DIR/$1 ]]; then
+    cp "$THEME_DIR/$1" "$BRANDING/$1"
+  elif [[ -f $OMA/$2 ]]; then
+    cp "$OMA/$2" "$BRANDING/$1"
+  fi
+}
+
+sync screensaver.txt logo.txt
+sync about.txt        icon.txt

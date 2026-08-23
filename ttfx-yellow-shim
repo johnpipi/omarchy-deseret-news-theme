@@ -1,0 +1,47 @@
+#!/bin/bash
+# ttfx shim -- render the Omarchy screensaver in Deseret Yellow.
+#
+# omarchy-screensaver calls `ttfx ... --random-effect`, which picks both the
+# effect AND its palette at random, so the screensaver never matches the theme.
+# This shim rewrites ONLY that one invocation: it drops --random-effect and
+# picks from a curated set of effects, each configured with brand golds.
+# Every other ttfx call passes straight through untouched.
+#
+# It lives here because /usr/share/omarchy/bin is first on PATH, so
+# omarchy-screensaver itself cannot be shadowed; ttfx (in /usr/bin) can.
+
+REAL=/usr/bin/ttfx
+[[ -x $REAL ]] || { echo "ttfx shim: $REAL not found" >&2; exit 127; }
+
+BRANDING="$HOME/.config/omarchy/branding/screensaver.txt"
+
+is_screensaver=0
+has_random=0
+for a in "$@"; do
+  [[ $a == "$BRANDING" ]] && is_screensaver=1
+  [[ $a == "--random-effect" ]] && has_random=1
+done
+
+# Not the screensaver? Behave exactly like the real ttfx.
+if ((!is_screensaver || !has_random)); then
+  exec "$REAL" "$@"
+fi
+
+args=()
+for a in "$@"; do [[ $a == "--random-effect" ]] || args+=("$a"); done
+
+DIM=d9b012      # Deseret Yellow, deepened (kept yellow, not amber)
+GOLD=ffd217     # Deseret Yellow
+LIGHT=fff3b0    # Deseret Yellow, lifted toward white
+
+case $((RANDOM % 4)) in
+0) effect=(print --final-gradient-stops $DIM $GOLD $LIGHT --final-gradient-direction vertical) ;;
+1) effect=(wipe --final-gradient-stops $DIM $GOLD $LIGHT) ;;
+2) effect=(beams --beam-gradient-stops ffffff $GOLD $DIM \
+                 --final-gradient-stops $DIM $GOLD $LIGHT) ;;
+3) effect=(laseretch --laser-gradient-stops ffffff $GOLD \
+                     --cool-gradient-stops $LIGHT $GOLD \
+                     --final-gradient-stops $DIM $GOLD $LIGHT) ;;
+esac
+
+exec "$REAL" "${args[@]}" "${effect[@]}"
